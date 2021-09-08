@@ -1,3 +1,10 @@
+# Overview
+
+The following procedure describes how to import a image version from a Shared Gallery in "Tenant 1" into a Shared Gallery deployed in the context of (another) "Tenant 2".
+![Architecture Overview](./img/architecture_overview.png "Architecture Overview")
+
+It is based on the guide [Share gallery VM images across Azure tenants using PowerShell](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/share-images-across-tenants).
+
 # (Preparation for demo setup) Create Managed Image as demo object
 
 ```
@@ -90,7 +97,7 @@ az role assignment create \
 ```
 
 ## Compose URL for authorization and call in Browser
-(see https://docs.microsoft.com/en-us/azure/virtual-machines/windows/share-images-across-tenants for reference)
+(see guide [Share gallery VM images across Azure tenants using PowerShell](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/share-images-across-tenants) for reference)
 ```
 echo "https://login.microsoftonline.com/$SHARED_TENANT_ID/oauth2/authorize?client_id=$APP_ID&response_type=code&redirect_uri=https%3A%2F%2Fwww.microsoft.com%2F"
 ``` 
@@ -99,7 +106,7 @@ Call URL in browser and log in with an account of Tenant 2 ("Shared Tenant"), ad
 
 ## Look up app registration in Tenant 2 ("Shared Tenant")
 Log in to tenant 2 in Azure Portal and browse to Enterprise Application (but not App Registrations!) and see if the application registration created above lists here with the same id:
-![Look up app registration in Tenant 2.](app-reg_check-in-tenant-2.png "Look up app registration in Tenant 2.")
+![Look up app registration in Tenant 2.](./img/app-reg_check-in-tenant-2.png "Look up app registration in Tenant 2.")
 
 # Setup Shared Image Gallery in Tenant 2 ("Shared Tenant")
 ## Login to Tenant 2 in CLI
