@@ -76,6 +76,8 @@ az sig image-version create \
 ## Add App Registration in Tenant 1 ("Corporate Tenant") 
 ![Create App Registration in AAD via Azure Portal.](./img/app-reg_create.png "Create App Registration in AAD via Azure Portal.")
 
+(Replace https://www.microsoft.com with another URI of your prference. But then make sure also to change the URL in the later step accordingly.)
+
 ## Get app id and set as variable
 ![Get App Registration id from Azure Portal.](./img/app-reg_copy-id.png "Get App Registration id from Azure Portal.")
 ```
@@ -98,6 +100,8 @@ az role assignment create \
 
 ## Compose URL for authorization and call in Browser
 (see guide [Share gallery VM images across Azure tenants using PowerShell](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/share-images-across-tenants) for reference)
+
+(Remember to adopt query parameter `redirect_uri` if you decided to replace https://www.microsoft.com with another URL of your preference above.)
 ```
 echo "https://login.microsoftonline.com/$SHARED_TENANT_ID/oauth2/authorize?client_id=$APP_ID&response_type=code&redirect_uri=https%3A%2F%2Fwww.microsoft.com%2F"
 ``` 
