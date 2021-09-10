@@ -76,7 +76,7 @@ az sig image-version create \
 ## Add App Registration in Tenant 1 ("Corporate Tenant") 
 ![Create App Registration in AAD via Azure Portal.](./img/app-reg_create.png "Create App Registration in AAD via Azure Portal.")
 
-(Replace https://www.microsoft.com with another URI of your prference. But then make sure also to change the URL in the later step accordingly.)
+(If you want to replace https://www.microsoft.com with another URI of your prference, make make sure to also change the URL in the later step accordingly.)
 
 ## Get app id and set as variable
 ![Get App Registration id from Azure Portal.](./img/app-reg_copy-id.png "Get App Registration id from Azure Portal.")
