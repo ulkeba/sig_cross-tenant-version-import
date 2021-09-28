@@ -83,11 +83,29 @@ az sig image-version create \
 ```
 export APP_ID=<Paste App Registration id here.>
 ```
-## Add a secret and set as variable
+## Setup up authentication
+Either add a secret or create and upload a certificate for authentication.
+### Option A: Add a secret and set as variable
 ![Set Registration secret in Azure Portal.](./img/app-reg_set-secret.png "Set Registration secret in Azure Portal.")
 ```
 export APP_SECRET=<Paste App Registration secret value here.>
 ```
+### Option B: Create a certificate and add as authentication method.
+Change values of variables ```CERT_NAME``` and ```CERT_SUBJ``` to match your organization / service principal.
+```
+CERT_NAME=service-principal-cert
+CERT_SUBJ="/C=7K/ST=The North/L=Winterfell/O=House Stark/CN=$CERT_NAME"
+
+openssl genpkey -out $CERT_NAME.key -algorithm RSA -pkeyopt rsa_keygen_bits:4096
+openssl req -new -key $CERT_NAME.key -out $CERT_NAME.csr -subj "$CERT_SUBJ"
+openssl x509 -req -days 365 -in $CERT_NAME.csr -signkey $CERT_NAME.key -out $CERT_NAME.crt
+
+cat $CERT_NAME.key  > $CERT_NAME.pem
+cat $CERT_NAME.crt >> $CERT_NAME.pem
+```
+
+Upload the created ```.crt``` file as certificate:
+![Set Registration secret in Azure Portal.](./img/app-reg_upload-certificate.png "Set Registration secret in Azure Portal.")
 
 
 ## Authorize App Registration to read from Shared Image Gallery
@@ -158,11 +176,23 @@ az role assignment create \
 
 # Import image across tenant boundaries
 ## Clear Azure CLI logins and login as App registration to both tenant simultaneously
+
+Depending on which authentication method had been chosen above, either login with a secret or your certificate and private key./
+
+### Option A: Login using a secreut
 ```
 az account clear
 az login --service-principal -u $APP_ID -p $APP_SECRET --tenant $CENTRAL_TENANT_ID
 az login --service-principal -u $APP_ID -p $APP_SECRET --tenant $SHARED_TENANT_ID 
 ```
+
+### Option B: Login using certificate and private key (both contained in the ```.pem``` file)
+```
+az account clear
+az login --service-principal -u $APP_ID -p ./$CERT_NAME.pem --tenant $CENTRAL_TENANT_ID
+az login --service-principal -u $APP_ID -p ./$CERT_NAME.pem --tenant $SHARED_TENANT_ID 
+```
+
 
 ## Import image version from Tenant 1 ("Corporate Tenant")  to Tenant 2 ("Shared Tenant")
 ```
